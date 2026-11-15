@@ -14,7 +14,6 @@ import Parser.Parser
 import Parser.Program
 import IRGen.ProgramGen
 import System.IO (hPutStrLn, stderr)
-import Control.Monad.State
 import Data.List (intercalate)
 import System.Directory (removeFile)
 
@@ -48,7 +47,7 @@ compileAndLink flagsMap files = do
         generateIR contents = do
             tokens <- fst <$> runLexer lexer (LexState contents (1,0))
             ast <- fst <$> runParser program tokens
-            irState <- snd <$> runStateT (programGen ast) (SemState [] [] M.empty (-1) (-1) 0)
+            irState <- snd <$> runIRGen (programGen ast) (SemState [] [] M.empty (-1) (-1) 0)
 
             pure $ reverse (irBuffer irState ++ ir irState)
 

@@ -39,3 +39,6 @@ data ExprRes = Temporary {name :: Node String}
             | Storage {name :: Node String}
             | Literal {num :: Node Word}
     deriving (Show)
+
+runIRGen :: IR a -> SemState -> Either Error (a, SemState)
+runIRGen = runStateT
