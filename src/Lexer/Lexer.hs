@@ -64,6 +64,8 @@ lexer = do
 
         ('\n':_) -> consume 1 >> lexer
 
+        ('\t':_) -> consume 1 >> lexer
+
         ('\'':_) -> do
             token <- char
             (token:) <$> lexer

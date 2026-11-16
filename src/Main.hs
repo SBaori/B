@@ -36,4 +36,4 @@ checkDependenciesOrDie = do
     maybeQbe <- findExecutable "qbe"
     qbeExists <- maybe (putStrLn "Could not find qbe in PATH!" >> pure False) (\_ -> pure True) maybeQbe
 
-    unless (gccExists && qbeExists) (die "\nExiting")
+    unless (gccExists && qbeExists) (die "\nExiting!")
