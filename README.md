@@ -22,7 +22,7 @@ cabal run B.cabal -- [flags] [<file>.b] -o <file>
 ```
 
 ## Compilation and Linking
-For linking, we directly invoke `gcc`. Only dynamically linked executable is supported for now.
+For linking, we directly invoke `gcc`. Full static linking is not supported yet!
 
 Input files can be of the types:
 | Extension | Type |
