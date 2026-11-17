@@ -225,12 +225,12 @@ main() {
 ### Addresses and de-referencing
 ```
 main() {
-    extrn putchar;
+    extrn putnum;
 
     auto a = 67;
     auto ptr_a = &a;
 
-    putchar(*ptr_a);
+    putnum(*ptr_a);
 
     return 0;
 }
