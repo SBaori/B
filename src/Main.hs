@@ -17,11 +17,13 @@ main = do
         (\(flagsMap, files) ->
             if M.member HELP flagsMap then
                 putStrLn $
+                    "./B [flags] [<file>.(b|o|s|ssa)] -o <file>\n\n" ++
                     "--help - Display this output.\n" ++
                     "--keep-ir - Keep the intermediate representation file.\n" ++
                     "--keep-asm - Keep the assembly file.\n" ++
                     "--keep-all - Keep every generated file.\n" ++
-                    "-c - Only compile (No linking)"
+                    "-c - Only compile (No linking)\n" ++
+                    "-o <file_name> - Specify output file name\n"
             else do
                 checkDependenciesOrDie
 
