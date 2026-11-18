@@ -2,6 +2,9 @@
 
 A compiler for the **B** (like) language targeting the QBE backend with a couple of syntax and semantic deviations from the original spec. This isnt exactly the historical B, but I didn't know what else to name this. Feel free to drop your suggestions if you have any!.
 
+## Dependencies
+`gcc` and `qbe` should be discoverable through $PATH.
+
 ## Build and Run
 Run the following commands at the same level of the .cabal file.
 
