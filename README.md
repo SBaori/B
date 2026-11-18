@@ -141,8 +141,10 @@ main() {
     auto i = 0;
 
     while (i < 10) {
-        if (i == 3)
+        if (i == 3) {
+            i += 1;
             continue;
+        }
 
         if (i == 7)
             break;
@@ -155,6 +157,7 @@ main() {
 
     return 0;
 }
+
 ```
 
 ### Arrays and pointer arithmetic (Deviation from historical B)
@@ -258,7 +261,7 @@ main() {
     auto greet = "Hello World";
     auto new_line = '\n';
 
-    putnum(greet);
+    putstr(greet);
     putchar(new_line);
 
     return 0;
@@ -284,7 +287,7 @@ main() {
     putchar('\n');
 
 
-    i &= 2;               // AND
+    i &= 0;               // AND
     putnum(i);
     putchar('\n');
 
