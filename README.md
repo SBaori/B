@@ -1,6 +1,6 @@
 # B
 
-A compiler for the **B** (like) language with a couple of syntax and semantic deviations from the original spec. This isnt exactly the historical B, but I didn't know what else to name this. Feel free to drop your suggestions if you have any!.
+A compiler for the **B** (like) language targeting the QBE backend with a couple of syntax and semantic deviations from the original spec. This isnt exactly the historical B, but I didn't know what else to name this. Feel free to drop your suggestions if you have any!.
 
 ## Build and Run
 Run the following commands at the same level of the .cabal file.
@@ -22,7 +22,7 @@ cabal run B.cabal -- [flags] [<file>.b] -o <file>
 ```
 
 ## Compilation and Linking
-For linking, we directly invoke `gcc`. Full static linking is not supported yet!
+For linking, we directly invoke `gcc`. **Full static linking is not supported yet!**
 
 Input files can be of the types:
 | Extension | Type |
@@ -45,6 +45,7 @@ $ ./B --help
 ```
 
 ## Pipeline
+**Note: widthof(word) is hardcoded to 64 bits (aka long) when emmiting the QBE IR for now!**
 ```mermaid
 graph TD
   Code --> Lexer --> Parser --> IRGen --> QBE --> gcc --> .o --> gcc --> ELF
@@ -390,7 +391,7 @@ main() {
 }
 ```
 
-### Currying (type shi)
+### Higher Order Functions
 ```
 ma_putchar() {
   extrn putchar;
