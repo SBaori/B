@@ -8,6 +8,7 @@ import Control.Monad.Error.Class (MonadError(throwError))
 import IRGen.IRGenUtils
 import Data.Char (ord)
 import Data.List (intercalate)
+import Data.Bool (bool)
 import Error
 import Data.Bits (xor, (.|.), (.&.), (.<<.), (.>>.))
 
@@ -155,11 +156,7 @@ preFixGen scopes (Negate pref) = do
     res <- preFixGen scopes pref
 
     case res of
-        Literal (Node num p) ->
-            if num > 0 then 
-                pure (Literal (Node 0 p)) 
-            else 
-                pure (Literal (Node 1 p))
+        Literal (Node num p) -> pure $ Literal (Node (bool 1 0 (num /= 0)) p)
         
         Storage (Node addr p) -> do
             val <- newReg
