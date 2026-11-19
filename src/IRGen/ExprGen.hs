@@ -157,9 +157,9 @@ preFixGen scopes (Negate pref) = do
     case res of
         Literal (Node num p) ->
             if num > 0 then 
-                pure (Literal (Node 1 p)) 
+                pure (Literal (Node 0 p)) 
             else 
-                pure (Literal (Node 0 p))
+                pure (Literal (Node 1 p))
         
         Storage (Node addr p) -> do
             val <- newReg
