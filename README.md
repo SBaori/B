@@ -51,7 +51,7 @@ $ ./B --help
 **Note: widthof(word) is hardcoded to 64 bits (aka long) when emmiting the QBE IR for now!**
 ```mermaid
 graph TD
-  Code --> Lexer --> Parser --> IRGen --> QBE --> gcc --> .o --> gcc --> ELF
+  Code --> Lexer --> Parser --> IRGen --> QBE --> gcc --> .o --> gcc --> ELF/exe
 ```
 
 ## Features Implemented
