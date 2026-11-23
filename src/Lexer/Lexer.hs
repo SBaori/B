@@ -7,7 +7,7 @@ import qualified Data.Map.Strict as M
 import Control.Monad.State (StateT (..), get, modify)
 import Control.Monad.Error.Class (MonadError(throwError))
 import Error
-import Data.Char (ord, chr)
+import Data.Char (ord, chr, isHexDigit)
 import Control.Monad (when)
 import Lexer.Token
 
@@ -37,7 +37,7 @@ consume num = do
             consume (num-1)
 
     where
-        newPos (l', _) '\n' = (l'+1, 0)
+        newPos (l', _) '\n' = (l'+1, 1)
         newPos (l',c') _ = (l', c'+1)
 
 expectChar :: Char -> Lexer ()
@@ -75,35 +75,35 @@ lexer = do
             (token:) <$> lexer
 
         ('+':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('+':'+':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('+':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
         
         ('-':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('-':'-':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('-':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
         
         ('*':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('*':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
         
         ('/':'/':_) -> do
@@ -119,171 +119,167 @@ lexer = do
             lexer
 
         ('/':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('/':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('%':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('%':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('<':'<':'=':_) -> do
-            token <- getToken $ take 3 chars
+            token <- getTokenAndConsume 3
             (token:) <$> lexer
 
         ('<':'<':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('<':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('<':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
         
         ('u':'<':'=':_) -> do
-            token <- getToken $ take 3 chars
+            token <- getTokenAndConsume 3
             (token:) <$> lexer
 
         ('u':'<':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('>':'>':'=':_) -> do
-            token <- getToken $ take 3 chars
+            token <- getTokenAndConsume 3
             (token:) <$> lexer
 
         ('>':'>':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('>':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('>':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('u':'>':'=':_) -> do
-            token <- getToken $ take 3 chars
+            token <- getTokenAndConsume 3
             (token:) <$> lexer
 
         ('u':'>':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('!':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('!':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('(':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         (')':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('{':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('}':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('[':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         (']':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('=':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('=':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('&':'&':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
         
         ('&':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('&':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('|':'|':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('|':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('|':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         ('^':'=':_) -> do
-            token <- getToken $ take 2 chars
+            token <- getTokenAndConsume 2
             (token:) <$> lexer
 
         ('^':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         (',':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         (';':_) -> do
-            token <- getToken $ take 1 chars
+            token <- getTokenAndConsume 1
             (token:) <$> lexer
 
         (c:_) -> do
-            token <- getNumber `orElse` getIdentifier 
+            token <- getDecimalNumber `orElse` getIdentifier 
                     `orElse` (throwError $ Error cPos ("Unknown Character: " ++ [c]))
 
             (token:) <$> lexer
 
     where
-        getToken :: String -> Lexer (Token) 
-        getToken lex' = do
+        getTokenAndConsume :: Int -> Lexer (Token) 
+        getTokenAndConsume lexLen = do
             LexState chars cPos <- get
 
-            when (take lexLen chars /= lex')
-                (throwError $ Error cPos (lex' ++ " does not match with " ++ take lexLen chars))
-            
+            let lex' = take lexLen chars
+
             when (M.notMember lex' stringToTokenKind)
                 (throwError $ Error cPos ("TokenKind not found in map for " ++ lex' ++ "!"))
 
             consume lexLen
             pure $ Token lex' (stringToTokenKind M.! lex') cPos
-
-            where
-                lexLen = length lex'
 
         untilEndLine = do
             LexState chars _ <- get
@@ -411,7 +407,7 @@ lexer = do
             where
                 valid i = isAlphaNum i || (i == '_')
 
-        getNumber = do
+        getDecimalNumber = do
             LexState chars cPos <- get
 
             let num = takeWhile isDigit chars

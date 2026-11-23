@@ -45,7 +45,7 @@ compileAndLink flagsMap files = do
     where
         generateIR :: String -> Either Error [String]
         generateIR contents = do
-            tokens <- fst <$> runLexer lexer (LexState contents (1,0))
+            tokens <- fst <$> runLexer lexer (LexState contents (1,1))
             ast <- fst <$> runParser program tokens
             irState <- snd <$> runIRGen (programGen ast) (SemState [] [] M.empty (-1) (-1) 0)
 

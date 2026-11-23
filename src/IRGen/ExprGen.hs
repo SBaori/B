@@ -17,7 +17,6 @@ elementGen _ (Num (Node n p)) = do
     -- @todo: Add overflow warnings.
     let num = read n :: Word
 
-    -- addIR $ currReg ++ " =l add 0, " ++ show num
     pure (Literal (Node num p))
 
 elementGen scopes (Var node) = either throwError pure (getScopeVariable scopes node)
@@ -116,24 +115,6 @@ postFixGen scopes (Opr el opr) = elementGen scopes el >>= oprGen opr
             case storage of
                 Literal (Node num p) -> pure $ Storage (Node (show num) p)
                 nonLiteral -> pure $ Storage (name nonLiteral)
-
-            -- case exprRes of
-            --     Literal (Node num p) -> do
-            --         storage <- evalBinOp (Temporary (Node (show num) p)) adjustedOffset (+) "l add"
-
-            --         case storage of
-            --             Temporary (Node name p') -> pure $ Storage (Node name p')
-            --             _ -> undefined              -- unreachable
-                
-            --     nonLiteral -> do
-            --         let nid = nodeId $ name nonLiteral
-            --         let p = nodePos $ name nonLiteral
-
-            --         storage <- evalBinOp (Temporary (Node nid p)) adjustedOffset (+) "l add"
-
-            --         case storage of
-            --             Temporary (Node name p') -> pure $ Storage (Node name p')
-            --             _ -> undefined              -- unreachable
 
         oprGen (Offset e opr') exprRes = oprGen opr' exprRes >>= oprGen (OffsetEnd e)
 
