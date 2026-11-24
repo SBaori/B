@@ -48,7 +48,9 @@ $ ./B --help
 ```
 
 ## Pipeline
-**Note: widthof(word) is hardcoded to 64 bits (aka long) when emmiting the QBE IR for now!**
+widthof(word) is hardcoded to 64 bits (aka long) when emmiting the QBE IR for now!
+
+The Parser is a handrolled recursive descent. Im still exploring the parser combinator style and libraries and how to integrate it with the current stack while keeping the same level (if not better) of parse error reporting.
 ```mermaid
 graph TD
   Code --> Lexer --> Parser --> IRGen --> QBE --> gcc --> .o --> gcc --> ELF/exe

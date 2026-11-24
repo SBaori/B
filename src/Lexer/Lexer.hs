@@ -383,15 +383,14 @@ lexer = do
                     LexState str _ <- get
 
                     case str of
+                        [] -> throwError $ Error start "Reached end of file while trying to read a string!"
+
                         ('\n':_) -> throwError $ Error start "Missing closing \""
                         ('\"':_) -> pure ""
 
-                        (c:_) -> do
+                        _ -> do
                             Token n _ _ <- getCharacter
                             ((chr $ read n):) <$> helper start
-
-                        [] -> throwError $ Error start "Reached end of file while trying to read a string!"
-
 
         getIdentifier = do
             LexState chars cPos <- get
